@@ -36,3 +36,39 @@ end
 function love.mousereleased(x, y, button)  -- when mouse is released
   loveframes.mousereleased(x, y, button)  -- passes loveframes mousereleased
 end
+function on_collide(dt, shape_a, shape_b)  -- when collider detects collisions
+  local check = false  -- set check to false, defines whether or not the two objects have been identified and passed collide info
+  for i,v in ipairs(computer.objects) do  -- for all computer.objects  **
+    for ip,vp in pairs(player.objects) do  -- first check to see if other object is a player object, player objects should never do anything when they collide **
+      if shape_a == v.shape and shape_b == vp.shape then  -- compare shapes to objects
+        v:onCollide(vp)  -- pass collide info
+        vp:onCollide(v)  -- pass collide info
+        check = true  -- set check true, will cause break at end of loops
+      elseif shape_a == vp.shape and shape_b == v.shape then  -- incase of other
+        v:onCollide(vp)
+        vp:onCollide(v)
+        check = true
+      end
+      if check then  -- breaks after we found the two objects
+        break
+      end
+    end
+    for ic,vc in ipairs(computer.objects) do  -- if it's another computer object **
+      if shape_a == v.shape and shape_b == vc.shape then  -- compares shapes to objects, like before
+        v:onCollide(vc)
+        vc:onCollide(v)
+        check = true
+      elseif shape_a = vc.shape and shape_b == v.shape then
+        v:onCollide(vc)
+        vc:onCollide(v)
+        check = true
+      end
+      if check then  -- break this one too, even if the other object is a player.object
+        break
+      end
+    end
+    if check then  -- break if check
+      break
+    end
+  end
+end
