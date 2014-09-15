@@ -1,4 +1,8 @@
-HC = require "hardoncollider"  -- load hardoncollider
+HC = require "hardoncollider"  -- load hardoncollider library
+LF = require "loveframes"  -- load loveframes library
+PL = require "player"  -- load player **
+CP = require "computer"  -- load computer objects **
+UI = require "gui"
 function love.load()  -- love2d handles loading
   love.window.setMode(600, 450)  -- set window size
 	collider = HC(100, on_collide)  -- initialize hardoncollider
