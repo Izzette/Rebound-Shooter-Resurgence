@@ -3,7 +3,7 @@
     Rebound Shooter: Resurgence
   ===================================
 
-  An open-source Lua project made for LÖVE 0.9.0.
+  An open-source Lua project made for LÃ–VE 0.9.0.
   Version alpha 2.0.9
   By Isabell Cowan, Wesley Smith, and Waabanang Hermes-Roach
   
@@ -13,12 +13,11 @@
   The collected bullets can later be refired offensively.
 
   Contains:
-   -- 
    -- Libraries (Third-Party):
        -- hardoncollider folder
           Hardon Collider
-          A collison detection library by Matthias Richter
-          Sub-Moduals:
+          A collision detection library by Matthias Richter
+          Sub-Modules:
            -- class.lua
            -- gjk.lua
            -- init.lua
@@ -28,9 +27,9 @@
            -- vector-light.lua
            -- README.txt
        -- loveframes folder
-          Löve Frames
+          LÃ¶ve Frames
           A GUI library by Kenny Shields
-          Sub-Moduals:
+          Sub-Modules:
            -- libraries folder
            -- objects folder
            -- skins folder
@@ -42,15 +41,15 @@
            -- liscense.txt
    -- Files (First-Party):
        -- main.lua
-          Operates all other files, exculding playerdata.lua and computerdata.lua.
-          Run by LÖVE
+          Operates all other files, excluding playerdata.lua and computerdata.lua.
+          Run by LÃ–VE
        -- player.lua
           Operates all player objects
           Accesses playerdata.lua to spawn these objects.
        -- playerdata.lua
           Contains all information about spawn state of player objects, as well as some of the changes these objects make to themselves.
        -- computer.lua
-          Operates all computer objects, enemies, bullets, ect.
+          Operates all computer objects, enemies, bullets, etc.
           Accesses computerdata.lua to spawn these objects.
        -- computerdata.lua
           Contains all information about spawn state of computer objects, as well as some changes these objects make to themselves.
@@ -59,33 +58,34 @@
        -- Rebound Shooter Resurgence.love
           Compressed runable form
 
-  Doccumentation:
+  Documentation:
    -- Rebound Shooter: Resurgence
       github.com/Izzette/Rebound-Shooter-Resurgence
-   -- LÖVE
+      github.com/Izzette/Rebound-Shooter-Resurgence/wiki
+   -- LÃ–VE
       love2d.org
    -- HardonCollider
       vrld.github.io/HardonCollider/index.html
       github.com/vrld/HardonCollider
-   -- Löve Frames
+   -- LÃ¶ve Frames
       nikolairesokav.com/projects.loveframes
       github.com/NikolaiResokav/LoveFrames
 
   Installation:
    -- Download Rebound Shooter: Resurgence
       github.com/Izzette/Rebound-Shooter-Resurgence
-      Compatable with win32, win64, and macosx-x64
-   -- Download LÖVE 0.9.0
+      Compatible with win32, win64, and macosx-x64
+   -- Download LÃ–VE 0.9.0
       bitbucket.org/rude/love/downloads
       Published 12-13-2013 and 12-14-2013
       Versions for win64, win32, linux-src, i386, amd64, and macosx-x64
-   -- Install LÖVE 0.9.0
+   -- Install LÃ–VE 0.9.0
    -- Optional; create shortcut on desktop to c:/../Rebound Shooter Resurgence.love
-   -- To run; open c:/../Rebound Shooter Resurgence.love with LÖVE 0.9.0
+   -- To run; open c:/../Rebound Shooter Resurgence.love with LÃ–VE 0.9.0
 
   Submit Bugs, Make Revisions:
    -- Create a new issue at github.com/Izzette/Rebound-Shooter-Resurgence/issues to report bugs
    -- Revisions can be made through the creation of a pull-request at github.com/Izzette/Rebound-Shooter-Resurgence/pulls
 
-  Olderversions:
+  Older-Versions:
    -- The abandoned Rebound Shooter version alpha 1.0.0 through alpha 1.1.27 can be found at github.com/Waabanang/rebound-shooter
