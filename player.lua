@@ -3,6 +3,11 @@ HC = require "hardoncollider"  -- require hardoncollider
 function loadPlayer()
   player = {}  -- create player
   player.life = {{},{},{}}  -- three lives
+  player.objects = {}  -- holds all player objects
+  local ref = refShip()  -- call refShip for all ship data
+  player.objects.ship = ref  -- create the ship
+  ref = refShield()  -- call refShield for all shield data
+  player.objects.shield = ref  -- create sheild
   player.update = function(dt)  -- create update function
     if love.keyboard.isDown("a") then  -- single keyboard check is neccicary to prevent ship and sheild from slowly migrating away from each other, I think.
       player.moveH = "left"  -- horizontal
@@ -37,14 +42,4 @@ function loadPlayer()
       v:keypressed(key)
     end
   end
-  player.keyreleased = function(key)
-    for k,v in pairs(player.objects) do  -- key release for all ship, sheild
-      v:keyreleased(key)
-    end
-  end
-  player.objects = {}  -- holds all player objects
-  local ref = refShip()  -- call refShip for all ship data
-  player.objects.ship = ref  -- create the ship
-  ref = refShield()  -- call refShield for all shield data
-  player.objects.shield = ref  -- create sheild
 end

@@ -35,7 +35,6 @@ function refShip(var)
       love.graphics.rectangle("fill", 15, 15, self.hp, 20) -- HP bar
     end
     ref.keypressed = function(self, key) end
-    ref.keyreleased = function(self, key) end
   elseif var == "update[2]" then
     ref = function(self, dt) -- will be update function
       for i,v in ipairs(computer.objects) do
@@ -155,7 +154,12 @@ function refShield(var)
         v:draw()
       end
     end
-    
+    ref.keypressed = function(self, key)
+      if key == "j" then
+        -- create bullet --
+        table.remove(self.bullets, 1)
+      end
+    end
   elseif var == "update[2]" then  -- second update phase, main phase
     ref = function(self, dt)
       if love.keyboard.isDown(" ") and (self.hp - (40 * dt)) >= 0 then
@@ -195,12 +199,9 @@ function refShield(var)
         self.hp = 100  -- full charge
       end
       if self.hp <= 0 then  -- upon full drain
-        collider:setPassive(self.shape)  -- turn shield off
-        self.solid = false -- set not solid
         local shield = refShield("draw[2]")  -- redefine draw function
         self.draw = shield
         self.keypressed = function(self, key) end
-        self.keyreleased = function(self, key) end
         shield = refShield("update[3]")  -- third recharge update phase
         self.update = shield
       end
@@ -241,7 +242,6 @@ function refShield(var)
         local shield = refShield()  -- call sheild data
         self.draw = shield.draw  -- restart draw
         self.keypressed = shield.keypressed  -- restart keypressed
-        self.keyreleased = shield.keyreleased  -- restart keyreleased
         shield = refShield("update[2]")  -- back to main update phase
         self.update = shield
       end
