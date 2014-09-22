@@ -163,6 +163,46 @@ function loadGraphics()  -- load graphics
         obj = self:addButton("Ok", 225, 2, 75, 255, 0, 0, 200, action)
         table.insert(toMain.objects, obj)
         table.insert(graphics.objects, toMain)
+      elseif str == "toQuit" then
+        local toQuit = {}
+        toQuit.id = "toQuit"
+        toQuit.objects = {}
+        toQuit.draw = function(self)
+          love.graphics.setColor(0, 0, 0, 200)
+          love.graphics.rectangle("fill", 125, 125, 200, 300)
+          love.graphics.setColor(0, 255, 0)
+          love.graphics.printf("Progress will be Lost", 150, 175, 100, "center", 3, 3)
+          for i,v in ipairs(self.objects) do
+            v:draw()
+          end
+        end
+        toQuit.hover = function(self, x, y)
+          for i,v in ipairs(self.objects) do
+            v:hover(x, y)
+          end
+        end
+        toQuit.mousepressed = function(self, x, y, key)
+          for i,v in ipairs(self.objects) do
+            v:mousepressed(x, y, key)
+          end
+        end
+        local action = function(self)
+          graphics:setGraphics("pause")
+          for i,v in ipairs(graphics.objects) do
+            if v.id ~= nil and v.id == "toQuit" then
+              v = nil
+              break
+            end
+          end
+        end
+        local obj = self:addButton("Cancel", 150, 395, 2, 75, 255, 255, 255, 200, action)
+        table.insert(toQuit.objects, obj)
+        action = function(self)
+          love.event.quit()
+        end
+        obj = self:addButton("Ok", 225, 2, 75, 255, 0, 0, 200, action)
+        table.insert(toQuit.objects, obj)
+        table.insert(graphics.objects, toQuit)
       end
     end
   end
