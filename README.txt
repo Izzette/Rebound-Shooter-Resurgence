@@ -1,10 +1,10 @@
 ﻿
   ===================================
-    Rebound Shooter: Resurgence
+      Rebound Shooter: Resurgence
   ===================================
 
   An open-source Lua project made for LÖVE 0.9.0.
-  Version alpha 2.0.10
+  Version alpha 2.0.11
   By Isabell Cowan, Wesley Smith, and Waabanang Hermes-Roach
   
   "Rebound Shooter: Resurgence" is an arcade-like space shooter.
@@ -44,6 +44,7 @@
           Handles GUI and some imagery
        -- spiral.jpg
           Used by graphics.lua as background image
+          Not ours, credits can be found in image properties
        -- README.txt
           This file, silly :P
        -- Rebound Shooter Resurgence.love
@@ -64,15 +65,17 @@
 
   Installation:
    -- Download Rebound Shooter: Resurgence
-      github.com/Izzette/Rebound-Shooter-Resurgence
-      Compatible with win32, win64, and macosx-x64
-   -- Download LÖVE 0.9.0
-      bitbucket.org/rude/love/downloads
-      Published 12-13-2013 and 12-14-2013
+      Download the ".zip" from github.com/Izzette/Rebound-Shooter-Resurgence
+      Extract the ".zip" (it contains another ".zip")
+      if running something other than windows change the extention of the file named "Rebound Shooter Resurgence.zip" to the ".love"
+      Compatible with win32, win64, and macosx-x64, ubutu-14.04
+   -- Download LÖVE v.0.9.0
+      Download v.0.9.0 for your OS from bitbucket.org/rude/love/downloads
+      v.0.9.0 was published 12-13-2013 and 12-14-2013
       Versions for win64, win32, linux-src, i386, amd64, and macosx-x64
-   -- Install LÖVE 0.9.0
-   -- Optional; create shortcut on desktop to c:/../Rebound Shooter Resurgence.love
-   -- To run; open c:/../Rebound Shooter Resurgence.love with LÖVE 0.9.0
+   -- Install LÖVE v.0.9.0
+   -- Optional; create shortcut on desktop to c:/../Rebound Shooter Resurgence.
+   -- To run; open c:/../Rebound Shooter Resurgence.love with LÖVE v.0.9.0
 
   Submit Bugs, Make Revisions:
    -- Create a new issue at github.com/Izzette/Rebound-Shooter-Resurgence/issues to report bugs
