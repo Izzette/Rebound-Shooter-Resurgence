@@ -106,6 +106,9 @@ function loadGraphics()  -- load graphics
         end
         local action = function(self)
           play = true
+          cTime = love.timer.getTime()  -- define startup time
+          loadComputer()
+          loadPlayer()
           graphics:setGraphics("game")
         end
         obj = self:addButton("Play", 150, 300, 3, 150, 0, 0, 255, 200, action)
