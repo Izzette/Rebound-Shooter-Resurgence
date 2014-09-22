@@ -6,14 +6,13 @@ function love.load()  -- love2d handles loading
   love.window.setMode(450, 550)  -- set window size
 	collider = HC(100, on_collide)  -- initialize hardoncollider
   loadGraphics()  -- load game graphics
-  loadPlayer()  -- loads player
-  loadComputer()  -- loads computer
-  play = true  -- defines game is running
-	cTime = love.timer.getTime()  -- define startup time
+  graphics:setGraphics("mainmenu")
+  play = false  -- defines game is running
 end
 function love.update(dt)  -- love2d handles updating
   collider:update(dt)  -- update hardoncollider
-	if play then  -- if play is true, the game runs
+  graphics:hover()  -- for mouse hover
+  if play then  -- if play is true, the game runs
     cTime = cTime + dt  -- update current in-game time
     player.update(dt)  -- update the player, ship
     computer.update(dt)  -- update computer
@@ -28,5 +27,5 @@ function love.keypressed(key)  -- when keys are pressed
   player.keypressed(key)  -- passes player keypressed information
 end
 function love.mousepressed(x, y, key)
-  graphics.mousepressed(x, y, key)
+  graphics:mousepressed(x, y, key)
 end
