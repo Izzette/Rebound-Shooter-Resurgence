@@ -11,7 +11,6 @@ function love.load()  -- love2d handles loading
 end
 function love.update(dt)  -- love2d handles updating
   collider:update(dt)  -- update hardoncollider
-  graphics:hover()  -- for mouse hover
   if play then  -- if play is true, the game runs
     cTime = cTime + dt  -- update current in-game time
     player.update(dt)  -- update the player, ship
@@ -20,11 +19,19 @@ function love.update(dt)  -- love2d handles updating
 end
 function love.draw()  -- love2d handles drawing
   graphics:draw()  -- draw graphics
-  computer.draw()  -- draw computer
-  player.draw()  -- draw player, ship
+  if play then
+    computer.draw()  -- draw computer
+    player.draw()  -- draw player, ship
+  end
 end
 function love.keypressed(key)  -- when keys are pressed
-  player.keypressed(key)  -- passes player keypressed information
+  if play then
+    player.keypressed(key)  -- passes player keypressed information
+    if key == "p" then
+      play = false
+      graphics:setGraphics("pause")
+    end
+  end
 end
 function love.mousepressed(x, y, key)
   graphics:mousepressed(x, y, key)
