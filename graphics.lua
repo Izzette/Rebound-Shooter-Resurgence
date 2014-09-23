@@ -22,7 +22,7 @@ function loadGraphics()  -- load graphics
           love.graphics.setColor(0, 0, 0)
           love.graphics.rectangle("fill", 0, 0, 450, 550)
           love.graphics.setColor(0, 255, 0)
-          love.graphics.printf("Rebound Shooter: Resurgence", 50, 100, 350, "center")
+          love.graphics.printf("Rebound Shooter: Resurgence", 25, 100, 400, "center", 0, 1.5, 1.5)
           for i,v in ipairs(self.objects) do
             v:draw(x, y)
           end
@@ -39,17 +39,17 @@ function loadGraphics()  -- load graphics
           loadPlayer()
           graphics:setGraphics("game")
         end
-        obj = self:addButton("Play", 150, 300, 3, 150, 0, 0, 255, 200, action)
+        obj = self:addButton("Play", 100, 250, 3, 250, 0, 0, 255, 200, action)
         table.insert(mainmenu.objects, obj)
         action = function(self)
           -- graphics:setGraphics("credits")
         end
-        obj = self:addButton("Credits", 150, 375, 3, 150, 0, 0, 255, 200, action)
+        obj = self:addButton("Credits", 100, 325, 3, 250, 0, 0, 255, 200, action)
         table.insert(mainmenu.objects, obj)
         action = function(self)
           love.event.quit()
         end
-        obj = self:addButton("Exit Game", 150, 450, 3, 150, 0, 0, 255, 200, action)
+        obj = self:addButton("Exit Game", 100, 400, 3, 250, 0, 0, 255, 200, action)
         table.insert(mainmenu.objects, obj)
         table.insert(self.objects, mainmenu)
       elseif str == "game" then
@@ -70,9 +70,9 @@ function loadGraphics()  -- load graphics
         pause.objects = {}
         pause.draw = function(self, x, y)
           love.graphics.setColor(0, 0, 0, 200)
-          love.graphics.rectangle("fill", 125, 125, 200, 300)
+          love.graphics.rectangle("fill", 100, 125, 250, 300)
           love.graphics.setColor(255, 255, 255, 255)
-          love.graphics.printf("Pause", 150, 150, 150, "center")
+          love.graphics.printf("Pause", 125, 175, 200, "center", 0, 1.25, 1.25)
           for i,v in ipairs(self.objects) do
             v:draw(x, y)
           end
@@ -86,17 +86,17 @@ function loadGraphics()  -- load graphics
           play = true
           graphics:setGraphics("game")
         end
-        local obj = self:addButton("Resume", 175, 275, 2, 100, 0, 0, 255, 200, action)
+        local obj = self:addButton("Resume", 125, 250, 2, 200, 0, 0, 255, 200, action)
         table.insert(pause.objects, obj)
         action = function(self)
           graphics:setGraphics("toMain")
         end
-        obj = self:addButton("Mainmenu", 175, 325, 2, 100, 0, 0, 255, 200, action)
+        obj = self:addButton("Mainmenu", 125, 300, 2, 200, 0, 0, 255, 200, action)
         table.insert(pause.objects, obj)
         action = function(self)
           graphics:setGraphics("toQuit")
         end
-        obj = self:addButton("Exit Game", 175, 375, 2, 100, 0, 0, 255, 200, action)
+        obj = self:addButton("Exit Game", 125, 350, 2, 200, 0, 0, 255, 200, action)
         table.insert(pause.objects, obj)
         table.insert(self.objects, pause)
       elseif str == "toMain" then
@@ -105,9 +105,9 @@ function loadGraphics()  -- load graphics
         toMain.objects = {}
         toMain.draw = function(self, x, y)
           love.graphics.setColor(0, 0, 0, 200)
-          love.graphics.rectangle("fill", 125, 125, 200, 300)
+          love.graphics.rectangle("fill", 100, 125, 200, 300)
           love.graphics.setColor(0, 255, 0)
-          love.graphics.printf("Progress will be Lost", 150, 150, 150, "center")
+          love.graphics.printf("Progress will be Lost", 125, 200, 200, "center", 0, 1.25, 1.25)
           for i,v in ipairs(self.objects) do
             v:draw(x, y)
           end
@@ -120,14 +120,14 @@ function loadGraphics()  -- load graphics
         local action = function(self)
           graphics:setGraphics("pause")
         end
-        local obj = self:addButton("Cancel", 150, 395, 2, 75, 255, 255, 255, 200, action)
+        local obj = self:addButton("Cancel", 125, 375, 2, 85, 255, 255, 255, 200, action)
         table.insert(toMain.objects, obj)
         action = function(self)
           player.objects = {}
           computer.objects = {}
           graphics:setGraphics("mainmenu")
         end
-        obj = self:addButton("Ok", 225, 395, 2, 75, 255, 0, 0, 200, action)
+        obj = self:addButton("Ok", 240, 375, 2, 85, 255, 0, 0, 200, action)
         table.insert(toMain.objects, obj)
         table.insert(graphics.objects, toMain)
       elseif str == "toQuit" then
@@ -138,7 +138,7 @@ function loadGraphics()  -- load graphics
           love.graphics.setColor(0, 0, 0, 200)
           love.graphics.rectangle("fill", 125, 125, 200, 300)
           love.graphics.setColor(0, 255, 0)
-          love.graphics.printf("Progress will be Lost", 150, 175, 150, "center")
+          love.graphics.printf("Progress will be Lost", 125, 200, 200, "center", 0, 1.25, 1.25)
           for i,v in ipairs(self.objects) do
             v:draw(x, y)
           end
@@ -151,12 +151,12 @@ function loadGraphics()  -- load graphics
         local action = function(self)
           graphics:setGraphics("pause")
         end
-        local obj = self:addButton("Cancel", 150, 395, 2, 75, 255, 255, 255, 200, action)
+        local obj = self:addButton("Cancel", 125, 375, 2, 85, 255, 255, 255, 200, action)
         table.insert(toQuit.objects, obj)
         action = function(self)
           love.event.quit()
         end
-        obj = self:addButton("Ok", 225, 395, 2, 75, 255, 0, 0, 200, action)
+        obj = self:addButton("Ok", 240, 375, 2, 85, 255, 0, 0, 200, action)
         table.insert(toQuit.objects, obj)
         table.insert(graphics.objects, toQuit)
       end
@@ -174,16 +174,17 @@ function loadGraphics()  -- load graphics
     obj.opacity = opacity
     obj.action = action
     obj.draw = function(self, x, y)
-      if x > self.x and x < self.x + self.width and y > self.y and y < self.y + 50 then
+      if x > self.x and x < self.x + self.width and y > self.y and y < self.y + (20 * self.size) then
+        love.graphics.setColor(255, 255, 255, 100)
+        love.graphics.rectangle("fill", self.x, self.y - (10 * self.size), self.width, (20 * self.size))
         love.graphics.setColor(self.red, self.green, self.blue, 255)
-        love.graphics.printf(self.string, self.x, self.y, self.width, "center")
       else
         love.graphics.setColor(self.red, self.green, self.blue, self.opacity)
-        love.graphics.printf(self.string, self.x, self.y, self.width, "center")
       end
+      love.graphics.printf(self.string, self.x, self.y, self.width / ((0.125 * self.size) + 0.875), "center", 0, ((0.125 * self.size) + 0.875), ((0.125 * self.size) + 0.875))
     end
     obj.mousepressed = function(self, x, y, key)
-      if x > self.x and x < self.x + self.width and y > self.y and y < self.y + 50 and key == "l" then
+      if x > self.x and x < self.x + self.width and y > self.y and y < self.y + (20 * self.size) and key == "l" then
         self:action()
       end
     end
