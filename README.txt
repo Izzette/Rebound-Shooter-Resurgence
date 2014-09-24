@@ -4,7 +4,7 @@
   ===================================
 
   An open-source Lua project made for LÖVE 0.9.0.
-  Version alpha 2.0.11
+  Version alpha 2.0.12
   By Isabell Cowan, Wesley Smith, and Waabanang Hermes-Roach
   
   "Rebound Shooter: Resurgence" is an arcade-like space shooter.
@@ -26,6 +26,11 @@
            -- spatialhash.lua
            -- vector-light.lua
            -- README.txt
+       -- abduction folder
+          Abduction Font
+           -- Abduction.ttf
+           -- Abduction.txt
+              Contains author and copyright information
    -- Files:
        -- main.lua
           Operates all other files, excluding playerdata.lua and computerdata.lua.
@@ -40,14 +45,16 @@
           Accesses computerdata.lua to spawn these objects.
        -- computerdata.lua
           Contains all information about spawn state of computer objects, as well as some changes these objects make to themselves.
-       -- graphics.lua
-          Handles GUI and some imagery
+       -- gui.lua
+          Handles GUI, uses graphicsengine.lua
+       -- graphicsengine.lua
+          Simple library for GUI
        -- spiral.jpg
           Used by graphics.lua as background image
           Not ours, credits can be found in image properties
        -- README.txt
           This file, silly :P
-       -- Rebound Shooter Resurgence.love
+       -- Rebound Shooter Resurgence.zip
           Compressed runable form
 
   Documentation:
