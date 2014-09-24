@@ -32,10 +32,26 @@ function love.keypressed(key)  -- when keys are pressed
     player.keypressed(key)  -- passes player keypressed information
     if key == "p" then
       play = false
-      gui:setGraphics("pause")
+      gui:setState("pausemenu")
     end
   end
 end
 function love.mousepressed(x, y, key)
   gui:mousepressed(x, y, key)
+end
+function endGame()
+  player = nil
+  computer = nil
+  graphics = nil
+  collider = nil
+  HC = nil
+  PL = nil
+  PD = nil
+  CP = nil
+  CD = nil
+  play = nil
+  image = nil
+  GE = nil
+  gui = nil
+  love.event.quit()
 end

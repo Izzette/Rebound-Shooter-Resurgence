@@ -1,6 +1,6 @@
 PD = require "playerdata"  -- load playerdata
 HC = require "hardoncollider"  -- require hardoncollider
-function loadPlayer()
+function initPlayer()
   player = {}  -- create player
   player.objects = {}  -- holds all player objects
   local ship = refShip()  -- call refShip for all ship data

@@ -1,5 +1,5 @@
 CD = require "computerdata"
-function loadComputer()
+function initComputer()
   computer = {}
   computer.objects = {}
   computer.update = function(dt)

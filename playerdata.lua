@@ -186,18 +186,29 @@ function refShield()
       love.graphics.setColor(255, 255, 255)  -- white
       self.shape:draw("line")  -- circle
     end
-    love.graphics.setColor(0, 0, 255)  -- blue
+    if self.hp >= 50 then
+      love.graphics.setColor(0, 0, 255)  -- blue
+    else
+      local red = 255 - (5 * self.hp)
+      local blue = 255 - red
+      love.graphics.setColor(red, 0, blue)
+    end
     love.graphics.rectangle("fill", 15, 50, self.hp, 20) -- shield charge bar
     for i,v in ipairs(self.bullets) do -- draw bullets
       v:draw()
     end
   end
   ref.drawLib[2] = function(self)
-    love.graphics.setColor(0, 0, 255)  -- blue
+    if math.floor(cTime * 4) % 2 == 0 then
+      love.graphics.setColor(255 - self.hp, 0 , self.hp, 255)
+    else
+      love.graphics.setColor(255 - self.hp, 0, self.hp, 50)
+    end
     love.graphics.rectangle("fill", 15, 50, self.hp, 20) -- shield charge bar
     local opacity = 255 - (5 * self.hp)  -- opacity calculation
     love.graphics.setColor(255, 0, 0, opacity)  -- set color to translucent ret
-    love.graphics.print("Recharge!", self.x - 30, self.y + 30)  -- print recharge bellow shield
+    graphics:setFont("abduct", 10)
+    love.graphics.printf("Recharge!", self.x - 50, self.y + 30, 100, "center")  -- print recharge bellow shield
   end
   ref.draw = ref.drawLib[1]
   ref.keypressed = function(self, key)
