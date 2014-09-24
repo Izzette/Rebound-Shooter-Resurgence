@@ -2,13 +2,14 @@ HC = require "hardoncollider"  -- load hardoncollider library
 PL = require "player"  -- load player.lua
 CP = require "computer"  -- load computer.lua
 GI = require "gui" -- load GUI
+MG = require "manager"
 function love.load()  -- love2d handles loading
   love.window.setMode(450, 550)  -- set window size
 	collider = HC(100, on_collide)  -- initialize hardoncollider
   initGui()  -- load game graphics
+  initManager()
   gui:setState("mainmenu")
   play = false  -- defines game is running
-  image = love.graphics.newImage("spiral.jpg")
 end
 function love.update(dt)  -- love2d handles updating
   collider:update(dt)  -- update hardoncollider
@@ -19,8 +20,6 @@ function love.update(dt)  -- love2d handles updating
   end
 end
 function love.draw()  -- love2d handles drawing
-  love.graphics.setColor(255, 255, 255, 200)
-  love.graphics.draw(image, 0, 0)
   gui:draw()  -- draw graphics
   if play then
     computer.draw()  -- draw computer
@@ -50,8 +49,9 @@ function endGame()
   CP = nil
   CD = nil
   play = nil
-  image = nil
-  GE = nil
+  GL = nil
   gui = nil
+  manager = nil
+  levels = nil
   love.event.quit()
 end

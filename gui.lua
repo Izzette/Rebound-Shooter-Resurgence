@@ -1,4 +1,4 @@
-GE = require "graphicslibrary"
+GL = require "graphicslibrary"
 function initGui()
   initGraphics()
   graphics:newFont("abduct", "abduction/Abduction.ttf")
@@ -15,8 +15,25 @@ function initGui()
     end
   end
   gui.setState = function(self, statename)
+    if "game" == statename then
+      local background = {}
+      for i,v in ipairs(manager.backgrounds) do
+        if v.levelname == manager.levelname then
+          self.background = love.image.newImage(v.image)
+        end
+      end
+      background.draw = function(self)
+        love.graphics.setColor(255, 255, 255, 200)
+        love.graphics.draw(self.background, 0, 0)
+      end
+      background.mousepressed = function(self, x, y, key) end
+      self.objects.background = background
+    end
     if "mainmenu" == statename then
       local mainmenu = {}
+      mainmenu.time = cTime
+      mainmenu.backgrounds = manager.backgrounds
+      mainmenu.images = {}
       mainmenu.objects = {}
       mainmenu.draw = function(self)
         local x = love.mouse.getX()
@@ -43,6 +60,7 @@ function initGui()
         cTime = 0
         initPlayer()
         initComputer()
+        manager:initLevel("testlevel")
         gui.objects.mainmenu = nil
       end
       parent:addButton(50, 45, 200, 50, clickthrough)
@@ -137,6 +155,8 @@ function initGui()
       parent:addButtonText("Cancel", "abduct", 12)
       clickthrough = function()
         gui:setState("mainmenu")
+        manager:initLevel("none")
+        gui.objects.background = nil
         gui.objects.toMain = nil
       end
       parent:addButton(130, 290, 100, 40, clickthrough)
