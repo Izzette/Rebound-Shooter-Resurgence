@@ -1,10 +1,18 @@
 GL = require "graphicslibrary"
+LV = require "levels"
+MG = require "manager"
 function initGui()
   initGraphics()
   graphics:newFont("abduct", "abduction/Abduction.ttf")
   gui = {}
   gui.objects = {}
+  gui.backgrounds = {}
+  gui.time = cTime
   gui.draw = function(self)
+    if "game" == self.state or "pause" == self.state then
+      love.graphics.setColor(255, 255, 255, 200)
+      love.graphics.draw(gui.background, 0, 0)
+    end
     for k,v in pairs(self.objects) do
       v:draw()
     end
@@ -14,28 +22,34 @@ function initGui()
       v:mousepressed(x, y, key)
     end
   end
+  gui.loadBackground = function(self, background)
+    self.background = love.graphics.newImage(background)
+  end
   gui.setState = function(self, statename)
     if "game" == statename then
-      local background = {}
-      for i,v in ipairs(manager.backgrounds) do
-        if v.levelname == manager.levelname then
-          self.background = love.image.newImage(v.image)
-        end
-      end
-      background.draw = function(self)
-        love.graphics.setColor(255, 255, 255, 200)
-        love.graphics.draw(self.background, 0, 0)
-      end
-      background.mousepressed = function(self, x, y, key) end
-      self.objects.background = background
+      self.state = "game"
     end
     if "mainmenu" == statename then
+      self.state = "main"
       local mainmenu = {}
-      mainmenu.time = cTime
-      mainmenu.backgrounds = manager.backgrounds
-      mainmenu.images = {}
+      mainmenu.time = love.timer.getTime()
+      mainmenu.backgrounds = loadBackgrounds()
       mainmenu.objects = {}
       mainmenu.draw = function(self)
+        local time = love.timer.getTime()
+        if #self.backgrounds > 1 and time > self.time + 1.5 then
+          love.graphics.setColor(255, 255, 255, (255 * (self.time - time)) + 255)
+          love.graphics.draw(self.backgrounds[1], 0, 0)
+          love.graphics.setColor(255, 255, 255, 255 * (time - self.time))
+          if time >= self.time + 2.5 then
+            table.insert(self.backgrounds, self.backgrounds[1])
+            table.remove(self.backgrounds, 1)
+            self.time = time
+          end
+        elseif #self.backgrounds == 1 then
+          love.graphics.setColor(255, 255, 255, 255)
+          love.graphics.draw(self.backgrounds[1], 0, 0)
+        end
         local x = love.mouse.getX()
         local y = love.mouse.getY()
         for i,v in ipairs(self.objects) do
@@ -56,9 +70,11 @@ function initGui()
       table.insert(mainmenu.objects, subtitle)
       local parent = graphics:addParent(75, 220, 300, 280)
       local clickthrough = function()
+        gui:setState("game")
         play = true
         cTime = 0
         initPlayer()
+        initManager()
         initComputer()
         manager:initLevel("testlevel")
         gui.objects.mainmenu = nil
@@ -86,6 +102,7 @@ function initGui()
     -- end
     end
     if "pausemenu" == statename then
+      self.state = "pause"
       local pausemenu = {}
       pausemenu.objects = {}
       pausemenu.draw = function(self)
@@ -112,6 +129,7 @@ function initGui()
       parent:setButtonTextColor(0, 255, 0, 255)
       clickthrough = function()
         gui:setState("toMain")
+        gui.objects.background = nil
         gui.objects.pausemenu = nil
       end
       parent:addButton(25, 200, 200, 40, clickthrough)

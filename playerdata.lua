@@ -1,12 +1,12 @@
 function refShip()
   local ref = {}
   ref.hp = 100  -- hp is 100
-  ref.shape = collider:addPolygon(225, 475, 215, 505, 235, 505)  -- icosolis triangle, 30 high, 20 wide
+  ref.shape = HC:addPolygon(225, 475, 215, 505, 235, 505)  -- icosolis triangle, 30 high, 20 wide
   ref.life = 3
   ref.updateLib = {{},{},{}}
   ref.updateLib[1] = function(self, dt)  -- called every frame, this one is just the on spawn function
-    collider:addToGroup("player", self.shape)  -- add to player
-    collider:setPassive(self.shape) -- active collison detection is programed into this object in the update[2] function
+    HC:addToGroup("player", self.shape)  -- add to player
+    HC:setPassive(self.shape) -- active collison detection is programed into this object in the update[2] function
     self.update = self.updateLib[2]  -- redefine ship.update
   end
   ref.updateLib[2] = function(self, dt)
@@ -51,7 +51,7 @@ function refShip()
       v.x, v.y = v.shape:center()
     end
     for i,v in ipairs(computer.objects) do
-      if self:collidesWith(v.shape) then  -- active collison detection, that shape's object is passed
+      if self.shape:collidesWith(v.shape) then  -- active collison detection, that shape's object is passed
         v:onCollide(self)  -- calls other objects collison method
         v.hp = 0  -- set obj.hp to zero, will be removed when obj.update next called
       end
@@ -93,9 +93,9 @@ function refShip()
       local ship = refShip()
       self.hp = ship.hp
       self.draw = ship.draw
-      ship.x, ship.y = ship.shape:center()
-      self.moveTo(ship.x, ship.y)
-      self.update = self.updateLib[2]
+      self.shape = ship.shape
+      self.x, self.y = self.shape:center()
+      self.update = self.updateLib[1]
     end
   end
   ref.update = ref.updateLib[1]
@@ -116,12 +116,12 @@ end
 function refShield()
   local ref = {}
   ref.hp = 100  -- hp is 100
-  ref.shape = collider:addCircle(225, 492, 25) -- circle with radius of 25
+  ref.shape = HC:addCircle(225, 492, 25) -- circle with radius of 25
   ref.bullets = {} -- bullets directory
   ref.updateLib = {{},{},{}}
   ref.updateLib[1] = function(self, dt)  -- on spawn update function
-    collider:setPassive(self.shape)  -- turn off active collison checks with the collider
-    collider:addToGroup("player", self.shape) -- add to group "player" ship and shield will not collide
+    HC:setPassive(self.shape)  -- turn off active collison checks with the HC
+    HC:addToGroup("player", self.shape) -- add to group "player" ship and shield will not collide
     self.update = self.updateLib[2]  -- redefine update
   end
   ref.updateLib[2] = function(self, dt)
@@ -149,8 +149,8 @@ function refShield()
             self.shape:draw("line")
           end
           table.insert(self.bullets, bullet)  -- add bullet
-          collider:setPassive(self.bullets[#self.bullets].shape) -- no need to actively check for collisions
-          collider:addToGroup("player", self.bullets[#self.bullets].shape)  -- prevent collisions
+          HC:setPassive(self.bullets[#self.bullets].shape) -- no need to actively check for collisions
+          HC:addToGroup("player", self.bullets[#self.bullets].shape)  -- prevent collisions
         end
         v.hp = 0  -- hp to zero, will be deleted in next v.update call
       end

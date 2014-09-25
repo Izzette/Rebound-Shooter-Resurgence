@@ -1,34 +1,34 @@
-HC = require "hardoncollider"  -- load hardoncollider library
+collider = require "hardoncollider"  -- load hardonHC library
 PL = require "player"  -- load player.lua
 CP = require "computer"  -- load computer.lua
 GI = require "gui" -- load GUI
-MG = require "manager"
 function love.load()  -- love2d handles loading
   love.window.setMode(450, 550)  -- set window size
-	collider = HC(100, on_collide)  -- initialize hardoncollider
+  love.window.setTitle("Rebound Shooter: Resurgence")
   initGui()  -- load game graphics
-  initManager()
+  HC = collider.new(50)
   gui:setState("mainmenu")
   play = false  -- defines game is running
 end
 function love.update(dt)  -- love2d handles updating
-  collider:update(dt)  -- update hardoncollider
+  HC:update(dt)  -- update hardonHC
   if play then  -- if play is true, the game runs
     cTime = cTime + dt  -- update current in-game time
-    player.update(dt)  -- update the player, ship
-    computer.update(dt)  -- update computer
+    player:update(dt)  -- update the player, ship
+    manager:update(dt)
+    computer:update(dt)  -- update computer
   end
 end
 function love.draw()  -- love2d handles drawing
   gui:draw()  -- draw graphics
   if play then
-    computer.draw()  -- draw computer
-    player.draw()  -- draw player, ship
+    computer:draw()  -- draw computer
+    player:draw()  -- draw player, ship
   end
 end
 function love.keypressed(key)  -- when keys are pressed
   if play then
-    player.keypressed(key)  -- passes player keypressed information
+    player:keypressed(key)  -- passes player keypressed information
     if key == "p" then
       play = false
       gui:setState("pausemenu")
@@ -42,7 +42,9 @@ function endGame()
   player = nil
   computer = nil
   graphics = nil
-  collider = nil
+  manager = nil
+  LV = nil
+  MG = nil
   HC = nil
   PL = nil
   PD = nil
@@ -51,7 +53,5 @@ function endGame()
   play = nil
   GL = nil
   gui = nil
-  manager = nil
-  levels = nil
   love.event.quit()
 end
