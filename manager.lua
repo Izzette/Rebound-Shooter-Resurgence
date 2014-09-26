@@ -8,8 +8,8 @@ function initManager()
     end
   end
   manager.initLevel = function(self, levelname)
-    local levelo = loadLevel("testlevel")
-    manager.objects = levelo.objects
-    gui:loadBackground(levelo.background)
+    local level = levels:loadLevel("testlevel")
+    self.objects = level.objects
+    self.background = level.background
   end
 end

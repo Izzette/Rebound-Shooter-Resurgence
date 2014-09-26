@@ -5,6 +5,7 @@ GI = require "gui" -- load GUI
 function love.load()  -- love2d handles loading
   love.window.setMode(450, 550)  -- set window size
   love.window.setTitle("Rebound Shooter: Resurgence")
+  initLevels()
   initGui()  -- load game graphics
   HC = collider.new(50)
   gui:setState("mainmenu")
@@ -20,11 +21,15 @@ function love.update(dt)  -- love2d handles updating
   end
 end
 function love.draw()  -- love2d handles drawing
-  gui:draw()  -- draw graphics
+  if gui.state == "game" or gui.state == "pause" then
+    love.graphics.setColor(255, 255, 255, 200)
+    love.graphics.draw(manager.background, 0, 0)
+  end
   if play then
     computer:draw()  -- draw computer
     player:draw()  -- draw player, ship
   end
+  gui:draw()  -- draw graphics
 end
 function love.keypressed(key)  -- when keys are pressed
   if play then

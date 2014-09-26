@@ -7,14 +7,14 @@ function addEntity(entityname, x, y, sizemod)
       size = size + sizemod
     end
     rock.hp = size
-    rock.speed = {x = math.random(-2, 2), y = math.random(1, 4)}
-    rock.rotate = math.random() - 0.5
+    rock.speed = {x = math.floor(5 * (math.random() - 0.5)), y = math.floor(10 * (math.random() - 0.5) + 10)}
+    rock.rotate = 0.5 * math.pi * (math.random() - 0.5)
     rock.update = function(self, i, dt)
       HC:setPassive(self.shape)
       self.update = function(self, dt)
         self.x, self.y = self.shape:center()
         self.shape:move(self.speed.x * dt, self.speed.y * dt)
-        self.shape:rotate(self.rotate)
+        self.shape:rotate(self.rotate * dt)
         self.x, self.y = self.shape:center()
         if self.x < 0 or self.x > 450 or self.y > 550 or 0 >= self.hp then
           table.remove(computer.objects, i)
