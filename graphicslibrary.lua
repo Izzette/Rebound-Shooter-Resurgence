@@ -91,6 +91,29 @@ function initGraphics()
     parent.setButtonTextColor = function(self, red, green, blue)
       self.objects[#self.objects]:setTextColor(red, green, blue)
     end
+    parent.addImage = function(self, filename, x, y, width, height)
+      local image = graphics:addImage(filename, self.x + x, self.y + y, width, height)
+      table.insert(self.objects, image)
+    end
     return parent
+  end
+  graphics.addImage = function(self, filename, x, y, width, height)
+    local image = {image = love.graphics.newImage(filename), x = x, y = y, width = width, height = height}
+    if 0 == width then
+      image.sy = height / image.image:getHeight()
+      image.sx = image.sy
+    elseif 0 == height then
+      image.sx = width / image.image:getWidth()
+      image.sy = image.sx
+    else
+      image.sx = width / image.image:getWidth()
+      image.sy = height / image.image:getHeight()
+    end
+    image.draw = function(self, x, y)
+      love.graphics.setColor(255, 255, 255, 200)
+      love.graphics.draw(self.image, self.x, self.y, 0, self.sx, self.sy)
+    end
+    image.mousepressed = function(self, x, y, key) end
+    return image
   end
 end

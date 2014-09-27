@@ -15,17 +15,15 @@ function love.update(dt)  -- love2d handles updating
   HC:update(dt)  -- update hardonHC
   if play then  -- if play is true, the game runs
     cTime = cTime + dt  -- update current in-game time
+    computer:update(dt)  -- update computer
     player:update(dt)  -- update the player, ship
     manager:update(dt)
-    computer:update(dt)  -- update computer
   end
 end
 function love.draw()  -- love2d handles drawing
   if gui.state == "game" or gui.state == "pause" then
     love.graphics.setColor(255, 255, 255, 200)
     love.graphics.draw(manager.background, 0, 0)
-  end
-  if play then
     computer:draw()  -- draw computer
     player:draw()  -- draw player, ship
   end

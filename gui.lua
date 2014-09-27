@@ -111,9 +111,13 @@ function initGui()
     if "pausemenu" == statename then
       self.state = "pause"
       local pausemenu = {}
-      if self.objects.com ~= nil then
-        pausemenu.com = self.objects.com
-        self.objects.com = nil
+      if self.objects.incmessage ~= nil then
+        pausemenu.incmessage = self.objects.incmessage
+        self.objects.incmessage = nil
+      end
+      if self.objects.rcvmessage ~= nil then
+        pausemenu.rcvmessage = self.objects.rcvmessage
+        self.objects.incmessage = nil
       end
       pausemenu.objects = {}
       pausemenu.draw = function(self)
@@ -133,8 +137,11 @@ function initGui()
       parent:setTextAlign("center")
       local clickthrough = function()
         play = true
-        if self.com ~= nil then
-          gui.objects.com = self.com
+        if self.incmessage ~= nil then
+          gui.objects.incmessage = self.incmessage
+        end
+        if self.rcvmessage ~= nil then
+          gui.objects.rcvmessage = self.rcvmessage
         end
         gui.objects.pausemenu = nil
       end
@@ -188,7 +195,8 @@ function initGui()
       clickthrough = function()
         gui:setState("mainmenu")
         manager:initLevel("none")
-        gui.objects.background = nil
+        computer.objects = nil
+        player.objects = nil
         gui.objects.toMain = nil
       end
       parent:addButton(130, 290, 100, 40, clickthrough)
@@ -233,7 +241,7 @@ function initGui()
       self.objects.toQuit = toQuit
     end
     if "incmessage" == statename then
-      local incmessage = {internal = manager.internal, sender = manager.sender, image = love.graphics.newImage(manager.photo), message = manager.message}
+      local incmessage = {internal = manager.internal}
       incmessage.objects = {}
       incmessage.draw = function(self, x, y)
         for i,v in ipairs(self.objects) do
@@ -245,6 +253,13 @@ function initGui()
           v:mousepressed(x, y, key)
         end
       end
+      local obj = {}
+      obj.draw = function(self, x, y) end
+      obj.mousepressed = function(self, x, y, key)
+        gui:setState("rcvmessage")
+        gui.objects.incmessage = nil
+      end
+      table.insert(incmessage.objects, obj)
       local string = ""
       if incmessage.internal then
         string = "Receiving INTERNAL message . . ."
@@ -254,14 +269,53 @@ function initGui()
       local parent = graphics:addParent(0, 350, 450, 200)
       parent:addText(string, 0, 90, 450, "abduct", 12)  -- change to unicode when added
       parent:setTextAlign("center")
-      local clickthrough = function()
-        gui:setState("rcvmessage")
-        gui.objects.incmessage = nil
-      end
-      parent:addButton(315, 150, 100, 30, clickthrough)
-      parent:addButtonText("< click-mouse >", "abduct", 8)
+      parent:addText("< click-to-continue >", 310, 160, 125, "abduct", 6)
+      parent:setTextAlign("center")
       table.insert(incmessage.objects, parent)
       self.objects.incmessage = incmessage
+    end
+    if "rcvmessage" == statename then
+      local rcvmessage = {}
+      rcvmessage.time = love.timer.getTime()
+      rcvmessage.objects = {}
+      rcvmessage.draw = function(self, x, y)
+        if love.timer.getTime() > self.time + 0.1 then
+          self.draw = function(self, x, y)
+            for i,v in ipairs(self.objects) do
+              v:draw(x, y)
+            end
+          end
+          self.mousepressed = function(self, x, y, key)
+            for i,v in ipairs(self.objects) do
+              v:mousepressed(x, y, key)
+            end
+          end
+          self.time = nil
+        end
+        for i,v in ipairs(self.objects) do
+          v:draw(x, y)
+        end
+      end
+      rcvmessage.mousepressed = function(self, x, y, key) end
+      local obj = {}
+      obj.draw = function(self, x, y) end
+      obj.mousepressed = function(self, x, y, key)
+        manager.internal = nil
+        manager.sender = nil
+        manager.photo = nil
+        manager.message = nil
+        play = true
+        gui.objects.rcvmessage = nil
+      end
+      table.insert(rcvmessage.objects, obj)
+      local parent = graphics:addParent(0, 350, 450, 200)
+      parent:addImage(manager.photo, 25, 25, 0, 150)
+      parent:addText(manager.sender, 175, 25, 150, "abduct", 10)
+      parent:addText(manager.message, 175, 50, 250, "abduct", 9)
+      parent:addText("< click-to-continue >", 310, 160, 125, "abduct", 6)
+      parent:setTextAlign("center")
+      table.insert(rcvmessage.objects, parent)
+      self.objects.rcvmessage = rcvmessage
     end
   end
 end

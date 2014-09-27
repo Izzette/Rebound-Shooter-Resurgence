@@ -7,11 +7,11 @@ function addEntity(entityname, x, y, sizemod)
       size = size + sizemod
     end
     rock.hp = size
-    rock.speed = {x = math.floor(5 * (math.random() - 0.5)), y = math.floor(10 * (math.random() - 0.5) + 10)}
-    rock.rotate = 0.5 * math.pi * (math.random() - 0.5)
+    rock.speed = {x = math.random(-10, 10), y = math.random(30, 200)}
+    rock.rotate = math.random() - 0.5
     rock.update = function(self, i, dt)
       HC:setPassive(self.shape)
-      self.update = function(self, dt)
+      self.update = function(self, i, dt)
         self.x, self.y = self.shape:center()
         self.shape:move(self.speed.x * dt, self.speed.y * dt)
         self.shape:rotate(self.rotate * dt)

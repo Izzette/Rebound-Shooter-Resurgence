@@ -75,7 +75,7 @@ function refShip()
           v = nil
         end
         play = false
-        -- include load main menu
+        gui:setState("mainmenu")
         for k,v in pairs(player.objects) do
           v = nil
         end
@@ -128,31 +128,33 @@ function refShield()
     if love.keyboard.isDown(" ") and (self.hp - (40 * dt)) >= 0 then
       self.hp = self.hp - (40 * dt)
       for i,v in ipairs(computer.objects) do  -- does not call v:
-        if self:collidesWith(v.shape) and v.typeN ~= nil and v.typeN == "bullet" and #self.bullets < 7 then  -- if the shield is on, the object has a name, that name is bullet, and the number of bullets is less than the capacity, seven
-          local bullet = {}  -- create local bullet
-          bullet.shape = v.shape  -- copy shape
-          bullet.x, bullet.y = v.shape:center()  -- define position
-          bullet.velocity.x = ((math.random() - 0.5) * 25) + ((ship.x - self.x) * 3)  -- random, tends towards ship
-          bullet.velocity.y = ((math.random() - 0.5) * 25) + ((ship.y - self.y) * 3)
-          bullet.move = function(self, dt)  -- independant move function
-            self.x, self.y = self.shape:center()  -- find position
-            if math.sqrt(((self.x - ship.x) ^ (2)) + ((self.y - ship.y) ^ 2)) > 25 then -- if far from ship
-              self.velocity.x = ((math.random() - 0.5) * 25) + ((ship.x - self.x) * 3)  -- tend velocity twoards ship
-              self.velocity.y = ((math.random() - 0.5) * 25) + ((ship.y - self.y) * 3)
+        if self.shape:collidesWith(v.shape) then
+          if v.typeN ~= nil and v.typeN == "bullet" and #self.bullets < 7 then  -- if the shield is on, the object has a name, that name is bullet, and the number of bullets is less than the capacity, seven
+            local bullet = {}  -- create local bullet
+            bullet.shape = v.shape  -- copy shape
+            bullet.x, bullet.y = v.shape:center()  -- define position
+            bullet.velocity.x = ((math.random() - 0.5) * 25) + ((ship.x - self.x) * 3)  -- random, tends towards ship
+            bullet.velocity.y = ((math.random() - 0.5) * 25) + ((ship.y - self.y) * 3)
+            bullet.move = function(self, dt)  -- independant move function
+              self.x, self.y = self.shape:center()  -- find position
+              if math.sqrt(((self.x - ship.x) ^ (2)) + ((self.y - ship.y) ^ 2)) > 25 then -- if far from ship
+                self.velocity.x = ((math.random() - 0.5) * 25) + ((ship.x - self.x) * 3)  -- tend velocity twoards ship
+                self.velocity.y = ((math.random() - 0.5) * 25) + ((ship.y - self.y) * 3)
+              end
+              self.shape:move(self.velocity.x * dt, self.velocity.y * dt)   -- move based on velocity
             end
-            self.shape:move(self.velocity.x * dt, self.velocity.y * dt)   -- move based on velocity
+            bullet.draw = function(self) -- draw bullet
+              love.graphics.setColor(255, 255, 255, 150)  -- ghostly white
+              self.shape:draw("fill")
+              love.graphics.setColor(0, 255, 255, 100)  -- cyan outline
+              self.shape:draw("line")
+            end
+            table.insert(self.bullets, bullet)  -- add bullet
+            HC:setPassive(self.bullets[#self.bullets].shape) -- no need to actively check for collisions
+            HC:addToGroup("player", self.bullets[#self.bullets].shape)  -- prevent collisions
           end
-          bullet.draw = function(self) -- draw bullet
-            love.graphics.setColor(255, 255, 255, 150)  -- ghostly white
-            self.shape:draw("fill")
-            love.graphics.setColor(0, 255, 255, 100)  -- cyan outline
-            self.shape:draw("line")
-          end
-          table.insert(self.bullets, bullet)  -- add bullet
-          HC:setPassive(self.bullets[#self.bullets].shape) -- no need to actively check for collisions
-          HC:addToGroup("player", self.bullets[#self.bullets].shape)  -- prevent collisions
+          v.hp = 0  -- hp to zero, will be deleted in next v.update call
         end
-        v.hp = 0  -- hp to zero, will be deleted in next v.update call
       end
     elseif love.keyboard.isDown(" ") and (self.hp - (40 * dt)) < 0 then
       self.hp = 0
