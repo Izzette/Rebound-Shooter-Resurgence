@@ -60,7 +60,7 @@ function initGraphics()
     local parent = {x = x, y = y, width = width, height = height}
     parent.objects = {}
     parent.draw = function(self, x, y)
-      love.graphics.setColor(0, 0, 0, 100)
+      love.graphics.setColor(0, 0, 0, 150)
       love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
       for i,v in ipairs(self.objects) do
         v:draw(x, y)
@@ -110,7 +110,7 @@ function initGraphics()
       image.sy = height / image.image:getHeight()
     end
     image.draw = function(self, x, y)
-      love.graphics.setColor(255, 255, 255, 200)
+      love.graphics.setColor(255, 255, 255, 225)
       love.graphics.draw(self.image, self.x, self.y, 0, self.sx, self.sy)
     end
     image.mousepressed = function(self, x, y, key) end

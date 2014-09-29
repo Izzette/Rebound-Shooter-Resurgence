@@ -3,7 +3,8 @@ LV = require "levels"
 MG = require "manager"
 function initGui()
   initGraphics()
-  graphics:newFont("abduct", "abduction/Abduction.ttf")
+  graphics:newFont("abduct", "fonts/abduction/Abduction.ttf")
+  graphics:newFont("roentgen", "fonts/roentgen/RENT_0.ttf")
   gui = {}
   gui.objects = {}
   gui.state = "main"
@@ -310,8 +311,8 @@ function initGui()
       table.insert(rcvmessage.objects, obj)
       local parent = graphics:addParent(0, 350, 450, 200)
       parent:addImage(manager.photo, 25, 25, 0, 150)
-      parent:addText(manager.sender, 175, 25, 150, "abduct", 10)
-      parent:addText(manager.message, 175, 50, 250, "abduct", 9)
+      parent:addText(manager.sender, 170, 20, 165, "roentgen", 14)
+      parent:addText(manager.message, 175, 55, 250, "roentgen", 12)
       parent:addText("< click-to-continue >", 310, 160, 125, "abduct", 6)
       parent:setTextAlign("center")
       table.insert(rcvmessage.objects, parent)

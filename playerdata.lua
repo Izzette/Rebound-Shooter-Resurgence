@@ -1,5 +1,5 @@
 function refShip()
-  local ref = {}
+  local ref = {x = 225, y = 490}
   ref.hp = 100  -- hp is 100
   ref.shape = HC:addPolygon(225, 475, 215, 505, 235, 505)  -- icosolis triangle, 30 high, 20 wide
   ref.life = 3
@@ -10,46 +10,6 @@ function refShip()
     self.update = self.updateLib[2]  -- redefine ship.update
   end
   ref.updateLib[2] = function(self, dt)
-    for k,v in pairs(player.objects) do
-      v.x, v.y = v.shape:center()
-    end
-    local x = 0
-    local y = 0
-    local s = 150 * dt
-    if love.keyboard.isDown("a") then
-      if self.x - s >= 20 then
-        x = -s
-      else
-        x = 20 - self.x
-      end
-    elseif love.keyboard.isDown("d") then
-      if self.x + s <= 430 then
-        x = s
-      else
-        x = 430 - self.x
-      end
-    end
-    if love.keyboard.isDown("w") then
-      if self.y - s >= 100 then
-        y = -s
-      else
-        y = 100 - self.y
-      end
-    elseif love.keyboard.isDown("s") then
-      if self.y + s <= 530 then
-        y = s
-      else
-        y = 530 - self.y
-      end
-    end
-    for k,v in pairs(player.objects) do
-      v.shape:move(x, y)
-      v.x, v.y = v.shape:center()
-    end
-    for i,v in ipairs(player.objects.shield.bullets) do
-      v.shape:move(2 * x / 3, 2 * y / 3)
-      v.x, v.y = v.shape:center()
-    end
     for i,v in ipairs(computer.objects) do
       if self.shape:collidesWith(v.shape) then  -- active collison detection, that shape's object is passed
         v:onCollide(self)  -- calls other objects collison method
@@ -57,8 +17,12 @@ function refShip()
       end
     end
     if self.hp <= 0 then  -- on death
-      for i,v in ipairs(player.objects.shield.bullets) do
-        -- fire randomly
+      for i,v in ipairs(player.objects.bullets.objects) do
+        local shot = addEntity("shot", v.x, v.y)
+        local theta = math.random() * 2 * math.pi
+        shot.speed.x = math.abs(math.sin(theta) * 200)
+        shot.speed.y = math.abs(math.cos(theta) * 200)
+        table.remove(player.objects.bullets.objects, i)
       end
       player.objects.shield = nil  -- delete shield
       self.draw = function(self)
@@ -114,10 +78,9 @@ function refShip()
   return ref
 end
 function refShield()
-  local ref = {}
+  local ref = {x = 225, y = 492}
   ref.hp = 100  -- hp is 100
   ref.shape = HC:addCircle(225, 492, 25) -- circle with radius of 25
-  ref.bullets = {} -- bullets directory
   ref.updateLib = {{},{},{}}
   ref.updateLib[1] = function(self, dt)  -- on spawn update function
     HC:setPassive(self.shape)  -- turn off active collison checks with the HC
@@ -129,30 +92,7 @@ function refShield()
       self.hp = self.hp - (40 * dt)
       for i,v in ipairs(computer.objects) do  -- does not call v:
         if self.shape:collidesWith(v.shape) then
-          if v.typeN ~= nil and v.typeN == "bullet" and #self.bullets < 7 then  -- if the shield is on, the object has a name, that name is bullet, and the number of bullets is less than the capacity, seven
-            local bullet = {}  -- create local bullet
-            bullet.shape = v.shape  -- copy shape
-            bullet.x, bullet.y = v.shape:center()  -- define position
-            bullet.velocity.x = ((math.random() - 0.5) * 25) + ((ship.x - self.x) * 3)  -- random, tends towards ship
-            bullet.velocity.y = ((math.random() - 0.5) * 25) + ((ship.y - self.y) * 3)
-            bullet.move = function(self, dt)  -- independant move function
-              self.x, self.y = self.shape:center()  -- find position
-              if math.sqrt(((self.x - ship.x) ^ (2)) + ((self.y - ship.y) ^ 2)) > 25 then -- if far from ship
-                self.velocity.x = ((math.random() - 0.5) * 25) + ((ship.x - self.x) * 3)  -- tend velocity twoards ship
-                self.velocity.y = ((math.random() - 0.5) * 25) + ((ship.y - self.y) * 3)
-              end
-              self.shape:move(self.velocity.x * dt, self.velocity.y * dt)   -- move based on velocity
-            end
-            bullet.draw = function(self) -- draw bullet
-              love.graphics.setColor(255, 255, 255, 150)  -- ghostly white
-              self.shape:draw("fill")
-              love.graphics.setColor(0, 255, 255, 100)  -- cyan outline
-              self.shape:draw("line")
-            end
-            table.insert(self.bullets, bullet)  -- add bullet
-            HC:setPassive(self.bullets[#self.bullets].shape) -- no need to actively check for collisions
-            HC:addToGroup("player", self.bullets[#self.bullets].shape)  -- prevent collisions
-          end
+          v:onCollide(self)
           v.hp = 0  -- hp to zero, will be deleted in next v.update call
         end
       end
@@ -162,9 +102,6 @@ function refShield()
       self.hp = self.hp + (15 * dt)  -- recharge slowly
     else  -- otherwise
       self.hp = 100  -- full charge
-      end
-    for i,v in ipairs(self.bullets) do  -- independant movement
-      v:move(dt)
     end
     if self.hp <= 0 then  -- upon full drain
       self.draw = self.drawLib[2]  -- redefine draw function
@@ -184,7 +121,7 @@ function refShield()
   ref.update = ref.updateLib[1]
   ref.drawLib = {{},{}}
   ref.drawLib[1] = function(self)
-    if love.keyboard.isDown(" ") then
+    if love.keyboard.isDown(" ") and play then
       love.graphics.setColor(255, 255, 255)  -- white
       self.shape:draw("line")  -- circle
     end
@@ -196,9 +133,6 @@ function refShield()
       love.graphics.setColor(red, 0, blue)
     end
     love.graphics.rectangle("fill", 15, 50, self.hp, 20) -- shield charge bar
-    for i,v in ipairs(self.bullets) do -- draw bullets
-      v:draw()
-    end
   end
   ref.drawLib[2] = function(self)
     if math.floor(cTime * 4) % 2 == 0 then
@@ -213,11 +147,68 @@ function refShield()
     love.graphics.printf("Recharge!", self.x - 50, self.y + 30, 100, "center")  -- print recharge bellow shield
   end
   ref.draw = ref.drawLib[1]
-  ref.keypressed = function(self, key)
-    if key == "j" then
-      -- create bullet --
-      table.remove(self.bullets, 1)
+  ref.keypressed = function(self, key) end
+  return ref
+end
+function refBullets()
+  local ref = {x = 0, y = 0}
+  ref.hp = 0
+  ref.objects = {}
+  ref.shape = {}
+  ref.shape.move = function(self, x, y)
+    for i,v in ipairs(player.objects.bullets.objects) do
+      v:move(x, y)
     end
+  end
+  ref.shape.center = function(self)
+    for i,v in ipairs(player.objects.bullets.objects) do
+      return 0, 0
+    end
+  end
+  ref.objects = {}
+  ref.update = function(self, dt)
+    for i,v in ipairs(self.objects) do
+      v:update(i, dt)
+    end
+  end
+  ref.draw = function(self)
+    for i,v in ipairs(self.objects) do
+      v:draw()
+    end
+  end
+  ref.keypressed = function(self, key)
+    if "j" == key and 1 <= #self.objects then
+      local shot = addEntity("shot", player.objects.ship.x, player.objects.ship.y - 30)
+      table.insert(computer.objects, shot)
+      table.remove(self.objects, 1)
+    end
+  end
+  return ref
+end
+function refRound(x, y)
+  local ref = {}
+  ref.hp = 0
+  ref.x = x
+  ref.y = y
+  ref.velocity = {x = 0, y = 0}
+  ref.move = function(self, x, y)
+    self.x = self.x + x
+    self.y = self.y + y
+  end
+  ref.update = function(self, i, dt)
+    local ship = player.objects.ship
+    local h = math.sqrt(((ship.x - self.x) ^ 2) + ((ship.y - self.y) ^ 2))
+    if 25 < h then
+      self.velocity.x = 4 * (ship.x - self.x) + math.random(-10, 10)
+      self.velocity.y = 4 * (ship.y - self.y) + math.random(-10, 10)
+    end
+    self:move(self.velocity.x * dt , self.velocity.y * dt)
+  end
+  ref.draw = function(self)
+    love.graphics.setColor(255, 255, 255, 200)
+    love.graphics.rectangle("fill", self.x - 1, self.y - 3, 2, 6)
+    love.graphics.setColor(0, 255, 255, 125)
+    love.graphics.rectangle("line", self.x - 2, self.y - 4, 4, 8)
   end
   return ref
 end

@@ -10,13 +10,14 @@ function love.load()  -- love2d handles loading
   HC = collider.new(50)
   gui:setState("mainmenu")
   play = false  -- defines game is running
+  math.randomseed(love.mouse.getX() + love.mouse.getY() + 1398)
 end
 function love.update(dt)  -- love2d handles updating
   HC:update(dt)  -- update hardonHC
   if play then  -- if play is true, the game runs
     cTime = cTime + dt  -- update current in-game time
-    computer:update(dt)  -- update computer
     player:update(dt)  -- update the player, ship
+    computer:update(dt)  -- update computer
     manager:update(dt)
   end
 end
