@@ -3,9 +3,9 @@
       Rebound Shooter: Resurgence
   ===================================
 
-  An open-source Lua project made for LÖVE 0.9.1.
-  version beta 0.0.0
-  By Isabell Cowan and Waabanang Hermes-Roach
+  An open-source Lua project made for LÖVE 0.9.0.
+  Version alpha 2.0.12
+  By Isabell Cowan, Wesley Smith, and Waabanang Hermes-Roach
   
   "Rebound Shooter: Resurgence" is an arcade-like space shooter.
   The player in this game controls a ship and shield, and defends themselves from alien spaceships.
@@ -26,47 +26,35 @@
            -- spatialhash.lua
            -- vector-light.lua
            -- README.txt
-       -- fonts folder
-           -- abduction folder
-              Abduction Font
-               -- Abduction.ttf
-               -- Abduction.txt
-                  Contains author and copyright information
-           -- roentgen folder
-              Roentgen Font
-               -- RENT_0.ttf
-               -- readme.txt
-                  Contains author and copyright information
-       -- images folder
-           -- scooty.jpg
-              Brinki licensed under CC BY-SA 2.0 (modified)
-           -- octo.jpg
-              Jean-Pierre licensed under CC BY-SA 2.0 (modified)
-           -- tri.jpg
-           -- spiral.jpg
-              Credits can be found in image properties
-           -- icon.png
+       -- abduction folder
+          Abduction Font
+           -- Abduction.ttf
+           -- Abduction.txt
+              Contains author and copyright information
    -- Files:
        -- main.lua
           Operates all other files, excluding playerdata.lua and computerdata.lua.
           Run by LÖVE
        -- player.lua
-          Handles all player objects
+          Operates all player objects
           Accesses playerdata.lua to spawn these objects.
        -- playerdata.lua
-          player prototype
+          Contains all information about spawn state of player objects, as well as some of the changes these objects make to themselves.
        -- computer.lua
-          Handles all computer objects, enemies, bullets, etc.
+          Operates all computer objects, enemies, bullets, etc.
           Accesses computerdata.lua to spawn these objects.
        -- computerdata.lua
-          PC prototype
+          Contains all information about spawn state of computer objects, as well as some changes these objects make to themselves.
        -- gui.lua
-          Handles GUI
-       -- graphicslibrary.lua
+          Handles GUI, uses graphicsengine.lua
+       -- graphicsengine.lua
           Simple library for GUI
+       -- spiral.jpg
+          Used by graphics.lua as background image
+          Not ours, credits can be found in image properties
        -- README.txt
           This file, silly :P
-       -- Rebound-Shooter-Resurgence.zip/.love
+       -- Rebound Shooter Resurgence.zip
           Compressed runable form
 
   Documentation:
@@ -78,6 +66,9 @@
    -- HardonCollider
       vrld.github.io/HardonCollider/index.html
       github.com/vrld/HardonCollider
+   -- Löve Frames
+      nikolairesokav.com/projects.loveframes
+      github.com/NikolaiResokav/LoveFrames
 
   Installation:
    -- Download Rebound Shooter: Resurgence
@@ -85,11 +76,13 @@
       Extract the ".zip" (it contains another ".zip")
       if running something other than windows change the extention of the file named "Rebound Shooter Resurgence.zip" to the ".love"
       Compatible with win32, win64, and macosx-x64, ubutu-14.04
-   -- Download LÖVE v.0.9.1
-      Download v.0.9.1 for your OS from bitbucket.org/rude/love/downloads
-   -- Install LÖVE v.0.9.1
+   -- Download LÖVE v.0.9.0
+      Download v.0.9.0 for your OS from bitbucket.org/rude/love/downloads
+      v.0.9.0 was published 12-13-2013 and 12-14-2013
+      Versions for win64, win32, linux-src, i386, amd64, and macosx-x64
+   -- Install LÖVE v.0.9.0
    -- Optional; create shortcut on desktop to c:/../Rebound Shooter Resurgence.
-   -- To run; open c:/../Rebound Shooter Resurgence.love with LÖVE v.0.9.1
+   -- To run; open c:/../Rebound Shooter Resurgence.love with LÖVE v.0.9.0
 
   Submit Bugs, Make Revisions:
    -- Create a new issue at github.com/Izzette/Rebound-Shooter-Resurgence/issues to report bugs

@@ -35,14 +35,8 @@ function refShip()
       self.time = cTime + 2  -- set respawn time
       self.life = self.life - 1
       if self.life <= 0 then  -- if that was the last life
-        for i,v in ipairs(computer.objects) do
-          v = nil
-        end
-        play = false
-        gui:setState("mainmenu")
-        for k,v in pairs(player.objects) do
-          v = nil
-        end
+        self.update = function(self, dt) end
+        self.draw = function(self) end
       else
         local ship = self.updateLib[3]  -- redefine ship.update to the death and respawn phase
         self.update = ship
@@ -66,7 +60,11 @@ function refShip()
   ref.draw = function(self)
     love.graphics.setColor(10, 255, 0)  -- lime green
     self.shape:draw("fill")  -- ship
-    love.graphics.setColor(0, 245, 10)  -- deep green
+    if 50 < self.hp then
+      love.graphics.setColor(0, 245, 10)  -- deep green
+    else
+      love.graphics.setColor(255 - (5 * self.hp), 5 * self.hp, 0)
+    end
     love.graphics.rectangle("fill", 15, 15, self.hp, 20) -- HP bar
     for i = 1,self.life do
       local x = 435 - (20 * i)  -- x pos for each individually
@@ -190,7 +188,8 @@ function refRound(x, y)
   ref.hp = 0
   ref.x = x
   ref.y = y
-  ref.velocity = {x = 0, y = 0}
+  local ship = player.objects.ship
+  ref.velocity = {x = 4 * (ship.x - x) + math.random(-10, 10), y = 4 * (ship.y - y) + math.random(-10, 10)}
   ref.move = function(self, x, y)
     self.x = self.x + x
     self.y = self.y + y

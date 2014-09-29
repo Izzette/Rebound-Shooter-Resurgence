@@ -14,23 +14,23 @@ function initPlayer()
     local x = 0
     local y = 0
     local ship = self.objects.ship
-    if 50 < ship.x and love.keyboard.isDown("a") then
+    if 25 < ship.x and love.keyboard.isDown("a") then
       x = -s
-    elseif 400 > ship.x and love.keyboard.isDown("d") then
+    elseif 425 > ship.x and love.keyboard.isDown("d") then
       x = s
-    elseif 50 > ship.x then
-      x = 50 - ship.x
-    elseif 400 < ship.x then
-      x = 400 - ship.x
+    elseif 25 > ship.x then
+      x = 25 - ship.x
+    elseif 425 < ship.x then
+      x = 425 - ship.x
     end
     if 150 < ship.y and love.keyboard.isDown("w") then
       y = -s
-    elseif 500 > ship.y and love.keyboard.isDown("s") then
+    elseif 525 > ship.y and love.keyboard.isDown("s") then
       y = s
     elseif 150 > ship.y then
       y = 150 - ship.y
-    elseif 500 < ship.y then
-      y = 500 - ship.y
+    elseif 525 < ship.y then
+      y = 525 - ship.y
     end
     for k,v in pairs(self.objects) do  -- update player objects, ship, sheild
       v.shape:move(x, y)
@@ -42,7 +42,9 @@ function initPlayer()
     if nil ~= self.objects.ship then
       self.objects.ship:draw()
     end
+    if nil ~= self.objects.bullets then
     self.objects.bullets:draw()
+    end
     if nil ~= self.objects.shield then
       self.objects.shield:draw()
     end

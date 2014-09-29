@@ -5,6 +5,7 @@ GI = require "gui" -- load GUI
 function love.load()  -- love2d handles loading
   love.window.setMode(450, 550)  -- set window size
   love.window.setTitle("Rebound Shooter: Resurgence")
+  love.window.setIcon(love.image.newImageData("/images/icon.png"))
   initLevels()
   initGui()  -- load game graphics
   HC = collider.new(50)
@@ -43,10 +44,14 @@ function love.mousepressed(x, y, key)
   gui:mousepressed(x, y, key)
 end
 function endGame()
+  play = nil
+  cTime = nil
   player = nil
   computer = nil
   graphics = nil
   manager = nil
+  levels = nil
+  gui = nil
   LV = nil
   MG = nil
   HC = nil
@@ -54,8 +59,7 @@ function endGame()
   PD = nil
   CP = nil
   CD = nil
-  play = nil
   GL = nil
-  gui = nil
+  CR = nil
   love.event.quit()
 end

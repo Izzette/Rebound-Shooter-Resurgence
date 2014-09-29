@@ -1,6 +1,7 @@
 GL = require "graphicslibrary"
 LV = require "levels"
 MG = require "manager"
+CR = require "credits"
 function initGui()
   initGraphics()
   graphics:newFont("abduct", "fonts/abduction/Abduction.ttf")
@@ -21,9 +22,6 @@ function initGui()
       v:mousepressed(x, y, key)
     end
   end
-  gui.loadBackground = function(self, background)
-    self.background = {{love.graphics.newImage(background)}}
-  end
   gui.setState = function(self, statename)
     if "game" == statename then
       self.state = "game"
@@ -41,7 +39,7 @@ function initGui()
         mainmenu.backgrounds[1].image = love.graphics.newImage(mainmenu.backgrounds[1].filename)
       end
       mainmenu.objects = {}
-      mainmenu.draw = function(self)
+      mainmenu.draw = function(self, x, y)
         local time = love.timer.getTime()
         if #self.backgrounds > 1 and time > self.time + 1.5 then
           love.graphics.setColor(255, 255, 255, (255 * (self.time - time)) + 255)
@@ -58,8 +56,6 @@ function initGui()
           love.graphics.setColor(255, 255, 255, 255)
           love.graphics.draw(self.backgrounds[1].image, 0, 0)
         end
-        local x = love.mouse.getX()
-        local y = love.mouse.getY()
         for i,v in ipairs(self.objects) do
           v:draw(x, y)
         end
@@ -84,15 +80,15 @@ function initGui()
         initPlayer()
         initManager()
         initComputer()
-        manager:initLevel("testlevel")
+        manager:initLevel("levelone")
         gui.objects.mainmenu = nil
       end
       parent:addButton(50, 45, 200, 50, clickthrough)
       parent.objects[#parent.objects]:addText("Play Game", "abduct", 16)
       parent.objects[#parent.objects].text:setColor(0, 255, 0, 255)
       clickthrough = function()
-        -- gui:setstate("credits")
-        -- gui.objects.mainmenu = nil
+        gui:setState("credits")
+        gui.objects.mainmenu = nil
       end
       parent:addButton(50, 115, 200, 50, clickthrough)
       parent.objects[#parent.objects]:addText("Credits", "abduct", 16)
@@ -105,9 +101,37 @@ function initGui()
       parent.objects[#parent.objects].text:setColor(255, 0, 0, 255)
       table.insert(mainmenu.objects, parent)
       self.objects.mainmenu = mainmenu
-    -- if "credits" == statename then
-      --
-    -- end
+    end
+    if "credits" == statename then
+      local credits = {}
+      credits.objects = {}
+      credits.draw = function(self, x, y)
+        for i,v in ipairs(self.objects) do
+          v:draw(x, y)
+        end
+      end
+      credits.mousepressed = function(self, x, y, key)
+        for i,v in ipairs(self.objects) do
+          v:mousepressed(x, y, key)
+        end
+      end
+      local parent = graphics:addParent(0, 0, 450, 550)
+      local height = 50
+      parent:addText("Credits:", 25, height, 400, "abduct", 20)
+      height = height + 50
+      local text = creditsText()
+      for i,v in ipairs(text) do
+        parent:addText(v.string, 50, height, 350, "roentgen", v.size)
+        height = height + v.height
+      end
+      local clickthrough = function()
+        gui:setState("mainmenu")
+        gui.objects.credits = nil
+      end
+      parent:addButton(275, 500, 150, 40, clickthrough)
+      parent:addButtonText("Main Menu", "abduct", 12)
+      table.insert(credits.objects, parent)
+      self.objects.credits = credits
     end
     if "pausemenu" == statename then
       self.state = "pause"
@@ -151,7 +175,6 @@ function initGui()
       parent:setButtonTextColor(0, 255, 0, 255)
       clickthrough = function()
         gui:setState("toMain")
-        gui.objects.background = nil
         gui.objects.pausemenu = nil
       end
       parent:addButton(25, 200, 200, 40, clickthrough)
@@ -195,9 +218,9 @@ function initGui()
       parent:addButtonText("Cancel", "abduct", 12)
       clickthrough = function()
         gui:setState("mainmenu")
-        manager:initLevel("none")
-        computer.objects = nil
-        player.objects = nil
+        computer.objects = {}
+        player.objects = {}
+        manager.objects = {}
         gui.objects.toMain = nil
       end
       parent:addButton(130, 290, 100, 40, clickthrough)
@@ -317,6 +340,100 @@ function initGui()
       parent:setTextAlign("center")
       table.insert(rcvmessage.objects, parent)
       self.objects.rcvmessage = rcvmessage
+    end
+    if "gameover" == statename then
+      local gameover = {}
+      gameover.objects = {}
+      gameover.draw = function(self, x, y)
+        for i,v in ipairs(self.objects) do
+          v:draw(x, y)
+        end
+      end
+      gameover.mousepressed = function(self, x, y, key)
+        for i,v in ipairs(self.objects) do
+          v:mousepressed(x, y, key)
+        end
+      end
+      local parent = graphics:addParent(100, 100, 250, 350)
+      parent:addText("Game Over", 25, 50, 200, "abduct", 18)
+      parent:setTextAlign("center")
+      local clickthrough = function()
+        computer.objects = {}
+        initPlayer()
+        math.randomseed(love.mouse.getX() + love.mouse.getY() + math.random(9000) + love.timer.getTime())
+        manager:initLevel("levelone")
+        cTime = 0
+        play = true
+        gui.objects.gameover = nil
+      end
+      parent:addButton(25, 150, 200, 40, clickthrough)
+      parent:addButtonText("Play Again", "abduct", 14)
+      parent:setButtonTextColor(0, 255, 0, 255)
+      clickthrough = function()
+        gui:setState("mainmenu")
+        computer.objects = {}
+        player.objects = {}
+        manager.objects = {}
+        gui.objects.gameover = nil
+      end
+      parent:addButton(25, 200, 200, 40, clickthrough)
+      parent:addButtonText("Mainmenu", "abduct", 14)
+      parent:setButtonTextColor(0, 0, 255, 255)
+      clickthrough = function()
+        endGame()
+      end
+      parent:addButton(25, 250, 200, 40, clickthrough)
+      parent:addButtonText("Quit Game", "abduct", 14)
+      parent:setButtonTextColor(255, 0, 0, 255)
+      table.insert(gameover.objects, parent)
+      self.objects.gameover = gameover
+    end
+    if "levelcomp" == statename then
+      local levelcomp = {}
+      levelcomp.objects = {}
+      levelcomp.draw = function(self, x, y)
+        for i,v in ipairs(self.objects) do
+          v:draw(x, y)
+        end
+      end
+      levelcomp.mousepressed = function(self, x, y, key)
+        for i,v in ipairs(self.objects) do
+          v:mousepressed(x, y, key)
+        end
+      end
+      local parent = graphics:addParent(100, 100, 250, 350)
+      parent:addText("Level Complete!", 25, 50, 200, "abduct", 18)
+      parent:setTextAlign("center")
+      local clickthrough = function()
+        computer.objects = {}
+        initPlayer()
+        math.randomseed(love.mouse.getX() + love.mouse.getY() + math.random(9000) + love.timer.getTime())
+        manager:initLevel("levelone")
+        cTime = 0
+        play = true
+        gui.objects.levelcomp = nil
+      end
+      parent:addButton(25, 150, 200, 40, clickthrough)
+      parent:addButtonText("Play Again", "abduct", 14)
+      parent:setButtonTextColor(0, 255, 0, 255)
+      clickthrough = function()
+        gui:setState("mainmenu")
+        computer.objects = {}
+        player.objects = {}
+        manager.objects = {}
+        gui.objects.levelcomp = nil
+      end
+      parent:addButton(25, 200, 200, 40, clickthrough)
+      parent:addButtonText("Mainmenu", "abduct", 14)
+      parent:setButtonTextColor(0, 0, 255, 255)
+      clickthrough = function()
+        endGame()
+      end
+      parent:addButton(25, 250, 200, 40, clickthrough)
+      parent:addButtonText("Quit Game", "abduct", 14)
+      parent:setButtonTextColor(255, 0, 0, 255)
+      table.insert(levelcomp.objects, parent)
+      self.objects.levelcomp = levelcomp
     end
   end
 end
