@@ -4,7 +4,7 @@
   ===================================
 
   An open-source Lua project made for LÖVE 0.9.1.
-  version beta 0.0.0
+  version beta 1.1.0
   By Isabell Cowan and Waabanang Hermes-Roach
   
   "Rebound Shooter: Resurgence" is an arcade-like space shooter.
@@ -32,11 +32,10 @@
                -- Abduction.ttf
                -- Abduction.txt
                   Contains author and copyright information
-           -- roentgen folder
-              Roentgen Font
-               -- RENT_0.ttf
-               -- readme.txt
-                  Contains author and copyright information
+	   -- datacontrol folder
+              Data Control Font
+	       -- data-unifon.ttf
+	       -- data-latin.ttfinformation
        -- images folder
            -- scooty.jpg
               Brinki licensed under CC BY-SA 2.0 (modified)

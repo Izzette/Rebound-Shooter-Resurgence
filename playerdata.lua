@@ -17,13 +17,7 @@ function refShip()
       end
     end
     if self.hp <= 0 then  -- on death
-      for i,v in ipairs(player.objects.bullets.objects) do
-        local shot = addEntity("shot", v.x, v.y)
-        local theta = math.random() * 2 * math.pi
-        shot.speed.x = math.abs(math.sin(theta) * 200)
-        shot.speed.y = math.abs(math.cos(theta) * 200)
-        table.remove(player.objects.bullets.objects, i)
-      end
+      player.objects.bullets.objects = {}
       player.objects.shield = nil  -- delete shield
       self.draw = function(self)
         for i = 1,self.life do
@@ -175,7 +169,7 @@ function refBullets()
     end
   end
   ref.keypressed = function(self, key)
-    if "j" == key and 1 <= #self.objects then
+    if "j" == key and 0 < #self.objects then
       local shot = addEntity("shot", player.objects.ship.x, player.objects.ship.y - 30)
       table.insert(computer.objects, shot)
       table.remove(self.objects, 1)

@@ -53,18 +53,18 @@ function addEntity(entityname, x, y, sizemod)
     square.hp = 20
     square.shape = HC:addRectangle(x - 15, y - 15, 30, 30)
     square.time = -0.5
-    square.speed = {x = 150, y = 40}
+    square.speed = {x = 100, y = 0}
     square.update = function(self, i, dt)
       HC:setPassive(self.shape)
       self.update = function(self, i, dt)
         self.shape:move(self.speed.x * dt, self.speed.y * dt)
         self.x, self.y = self.shape:center()
-        if 425 < self.x then
-          self.shape:moveTo(400, self.y)
-          self.speed.x = -75
-        elseif 25 > self.x then
-          self.shape:moveTo(50, self.y)
-          self.speed.x = 75
+        if 475 < self.x then
+          self.shape:moveTo(475, self.y + 60)
+          self.speed.x = -self.speed.x
+        elseif -25 > self.x then
+          self.shape:moveTo(-25, self.y + 60)
+          self.speed.x = -self.speed.x
         end
         self.time = self.time + dt
         if 0.5 <= self.time then
@@ -110,7 +110,7 @@ function addEntity(entityname, x, y, sizemod)
     end
     bullet.onCollide = function(self, obj)
       obj.hp = obj.hp - self.hp
-      if player.objects.shield == obj and 7 > #player.objects.bullets.objects then
+      if player.objects.shield == obj and 10 > #player.objects.bullets.objects then
         local round = refRound(self.x, self.y)
         table.insert(player.objects.bullets.objects, round)
       end

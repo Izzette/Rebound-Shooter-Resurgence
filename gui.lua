@@ -5,7 +5,7 @@ CR = require "credits"
 function initGui()
   initGraphics()
   graphics:newFont("abduct", "fonts/abduction/Abduction.ttf")
-  graphics:newFont("roentgen", "fonts/roentgen/RENT_0.ttf")
+  graphics:newFont("data", "fonts/datacontrol/data-latin.ttf")
   gui = {}
   gui.objects = {}
   gui.state = "main"
@@ -28,6 +28,7 @@ function initGui()
     end
     if "mainmenu" == statename then
       self.state = "main"
+      play = false
       local mainmenu = {}
       mainmenu.time = love.timer.getTime()
       mainmenu.backgrounds = levels.backgrounds
@@ -121,7 +122,7 @@ function initGui()
       height = height + 50
       local text = creditsText()
       for i,v in ipairs(text) do
-        parent:addText(v.string, 50, height, 350, "roentgen", v.size)
+        parent:addText(v.string, 50, height, 350, "data", v.size)
         height = height + v.height
       end
       local clickthrough = function()
@@ -206,9 +207,9 @@ function initGui()
         end
       end
       local parent = graphics:addParent(100, 100, 250, 350)
-      parent:addText("Progress Will Be Lost", 25, 75, 200, "abduct", 16)
+      parent:addText("Progress Will Be Lost", 25, 75, 200, "data", 16)
       parent:setTextAlign("center")
-      parent:addText("Are you sure?", 25, 125, 200, "abduct", 18)
+      parent:addText("Are you sure?", 25, 125, 200, "data", 18)
       parent:setTextAlign("center")
       local clickthrough = function()
         gui:setState("pausemenu")
@@ -245,9 +246,9 @@ function initGui()
         end
       end
       local parent = graphics:addParent(100, 100, 250, 350)
-      parent:addText("Progress Will Be Lost", 25, 75, 200, "abduct", 16)
+      parent:addText("Progress Will Be Lost", 25, 75, 200, "data", 16)
       parent:setTextAlign("center")
-      parent:addText("Are you sure?", 25, 125, 200, "abduct", 18)
+      parent:addText("Are you sure?", 25, 125, 200, "data", 18)
       parent:setTextAlign("center")
       local clickthrough = function()
         gui:setState("pausemenu")
@@ -291,9 +292,9 @@ function initGui()
         string = "Receiving REMOTE message . . ."
       end
       local parent = graphics:addParent(0, 350, 450, 200)
-      parent:addText(string, 0, 90, 450, "abduct", 12)  -- change to unicode when added
+      parent:addText(string, 0, 90, 450, "data", 20)
       parent:setTextAlign("center")
-      parent:addText("< click-to-continue >", 310, 160, 125, "abduct", 6)
+      parent:addText("< click-to-continue >", 310, 160, 125, "data", 10)
       parent:setTextAlign("center")
       table.insert(incmessage.objects, parent)
       self.objects.incmessage = incmessage
@@ -334,9 +335,9 @@ function initGui()
       table.insert(rcvmessage.objects, obj)
       local parent = graphics:addParent(0, 350, 450, 200)
       parent:addImage(manager.photo, 25, 25, 0, 150)
-      parent:addText(manager.sender, 170, 20, 165, "roentgen", 14)
-      parent:addText(manager.message, 175, 55, 250, "roentgen", 12)
-      parent:addText("< click-to-continue >", 310, 160, 125, "abduct", 6)
+      parent:addText(manager.sender, 170, 20, 165, "data", 14)
+      parent:addText(manager.message, 175, 55, 250, "data", 12)
+      parent:addText("< click-to-continue >", 310, 160, 125, "data", 10)
       parent:setTextAlign("center")
       table.insert(rcvmessage.objects, parent)
       self.objects.rcvmessage = rcvmessage
@@ -402,7 +403,7 @@ function initGui()
         end
       end
       local parent = graphics:addParent(100, 100, 250, 350)
-      parent:addText("Level Complete!", 25, 50, 200, "abduct", 18)
+      parent:addText("Cleared!", 25, 50, 200, "abduct", 18)
       parent:setTextAlign("center")
       local clickthrough = function()
         computer.objects = {}

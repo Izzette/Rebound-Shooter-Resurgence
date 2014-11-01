@@ -17,7 +17,7 @@ function initLevels()
           manager.internal = true
           manager.sender = "Scooty:"
           manager.photo = "/images/scooty.jpg"
-          manager.message = "Captain, we are receiving data that we are inevitably heading into a very large asteroid field.  Use the 'a', 's', 'd', 'w' keys to control the craft.  Hold the space bar to power up the shield and protect the ship."
+          manager.message = "Captain, we are receiving data that we are inevitably heading into a very large asteroid field.  Use the 'aswd' keys to control the craft.  Hold the space bar to power up the shield and protect the ship."
           gui:setState("incmessage")
           table.remove(manager.objects, i)
         end
@@ -45,7 +45,7 @@ function initLevels()
           self.update = function(self, i, dt)
             self.time = self.time + dt
             if 1 <= self.time then
-              local square = addEntity("square", 75, -25)
+              local square = addEntity("square", 75, 25)
               table.insert(computer.objects, square)
               self.time = 0
               self.number = self.number + 1

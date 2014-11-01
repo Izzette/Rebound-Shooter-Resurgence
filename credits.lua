@@ -10,12 +10,12 @@ function creditsText()
   size = 14
   paragraph = {string = string, size = size, height = height}
   table.insert(credits, paragraph)
-  string = "Made with: LÖVE by 'rude'; ZeroBraneStudio by Paul Kulchenko; HardonCollider by Matthias Richter; Abduction by R. Gast; Roentgen NBP by Nate Halley; and M106 Spiral Galaxy by Robert Gendler, JayBany; and Git by Linus Torvalds, Junio Hamano, many others (github.com/git/git/graphs/contributors); Lua by Roberto Ierusalimschy, Luiz Henrique de Figueiredo, Waldemar Celes.  Image credits in README.txt."
+  string = "Made with: LÖVE by 'rude'; ZeroBraneStudio by Paul Kulchenko; HardonCollider by Matthias Richter; Abduction by R. Gast; and M106 Spiral Galaxy by Robert Gendler, JayBany; and Git by Linus Torvalds, Junio Hamano, many others (github.com/git/git/graphs/contributors); Lua by Roberto Ierusalimschy, Luiz Henrique de Figueiredo, Waldemar Celes.  Image credits in README.txt."
   height = 175
   size = 14
   paragraph = {string = string, size = size, height = height}
   table.insert(credits, paragraph)
-  string = "v.b.0.0.0"
+  string = "v.b.1.1.0"
   height = 15
   size = 12
   paragraph = {string = string, size = size, height = height}
